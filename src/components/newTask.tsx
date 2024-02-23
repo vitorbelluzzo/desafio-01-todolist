@@ -1,6 +1,7 @@
-import { ClipboardList, PlusCircle } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import { Card } from './card'
 import { SetStateAction, useState } from 'react'
+import image from '../assets/Clipboard.svg'
 
 export function NewTask() {
   const [inputContent, setInputContent] = useState('')
@@ -17,7 +18,6 @@ export function NewTask() {
     if (inputContent !== '') {
       setCards([...cards, inputContent])
       setInputContent('')
-      console.log(cards)
     }
   }
 
@@ -54,10 +54,22 @@ export function NewTask() {
           </div>
         </div>
       </div>
-      <div className="mt-6 max-w-xl mx-auto gap-2">
-        {cards.map((card) => {
-          return <Card content={card} key={card} />
-        })}
+      <div className="mt-6 max-w-xl mx-auto gap-2 h-screen">
+        {cards.length > 0 ? (
+          cards.map((card) => <Card content={card} key={card} />)
+        ) : (
+          <div className="flex flex-col items-center">
+            <img src={image} className="size-14" alt="Clipboard" />
+            <div className="mt-4 flex flex-col items-center justify-center">
+              <p className="text-base font-bold text-zinc-400">
+                Você ainda não tem tarefas cadastradas
+              </p>
+              <p className="text-zinc-400">
+                Crie tarefas e organize seus itens a fazer
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
