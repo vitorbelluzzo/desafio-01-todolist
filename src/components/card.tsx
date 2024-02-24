@@ -1,6 +1,10 @@
 import { Trash2 } from 'lucide-react'
 
-export function Card({ content }: { content: string }) {
+export function Card({ content, deleteComment }) {
+  function handleDeleteTask() {
+    deleteComment(content)
+  }
+
   return (
     <div className=" flex rounded-lg bg-zinc-700 p-4 gap-3 items-start justify-between border-zinc-600 border mt-3">
       <input
@@ -15,7 +19,9 @@ export function Card({ content }: { content: string }) {
       >
         {content}
       </p>
-      <Trash2 className="size-5 cursor-pointer text-zinc-300 hover:text-red-500" />
+      <button onClick={handleDeleteTask}>
+        <Trash2 className="size-5 cursor-pointer text-zinc-300 hover:text-red-500" />
+      </button>
     </div>
   )
 }

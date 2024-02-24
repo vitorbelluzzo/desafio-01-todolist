@@ -6,6 +6,8 @@ import image from '../assets/Clipboard.svg'
 export function NewTask() {
   const [inputContent, setInputContent] = useState('')
   const [cards, setCards] = useState([])
+  const [countTask, setCountTask] = useState(0)
+  const [countTaskDone, setCountTaskDone] = useState(0)
 
   function handleInputChange(event: {
     target: { value: SetStateAction<string> }
@@ -13,18 +15,31 @@ export function NewTask() {
     setInputContent(event.target.value)
   }
 
-  function handleSubmit(event: { preventDefault: () => void }) {
+  function handleSubmitAndSetTaskCount(event: { preventDefault: () => void }) {
     event.preventDefault()
     if (inputContent !== '') {
       setCards([...cards, inputContent])
       setInputContent('')
+      setCountTask(countTask + 1)
     }
+  }
+
+  function TaskDone() {
+    setCountTaskDone(countTaskDone + 1)
+  }
+
+  function deleteComment(taskToDelete: unknown) {
+    const newTaskWithoutDeleteTheOlderOne = cards.filter((card) => {
+      return card !== taskToDelete
+    })
+    setCountTask(countTask - 1)
+    setCards(newTaskWithoutDeleteTheOlderOne)
   }
 
   return (
     <div className="">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitAndSetTaskCount}
         className="flex justify-center gap-2 mb-3  w-full top-32 absolute"
       >
         <input
@@ -33,6 +48,7 @@ export function NewTask() {
           placeholder="Adicione uma nova tarefa"
           value={inputContent}
           onChange={handleInputChange}
+          required
         />
         <button
           type="submit"
@@ -46,19 +62,30 @@ export function NewTask() {
         <div className="flex justify-between  w-full">
           <div className="flex gap-2 items-center">
             <h1 className="text-sm font-bold text-blue-400">Tarefas criadas</h1>
-            <span className="px-2 py-0.5 bg-zinc-600 rounded-full">0</span>
+            <span className="px-2 py-0.5 bg-zinc-600 rounded-full">
+              {countTask}
+            </span>
           </div>
           <div className="flex gap-2 items-center">
             <h1 className="text-sm font-bold text-purple-400">Concluídas</h1>
-            <span className="px-2 py-0.5 bg-zinc-600 rounded-full">0 de 0</span>
+            <span className="px-2 py-0.5 bg-zinc-600 rounded-full">
+              {countTaskDone} de {countTask}
+            </span>
           </div>
         </div>
       </div>
       <div className="mt-6 max-w-xl mx-auto gap-2 h-screen">
         {cards.length > 0 ? (
-          cards.map((card) => <Card content={card} key={card} />)
+          cards.map((card) => (
+            <Card
+              content={card}
+              key={card}
+              onClick={TaskDone}
+              deleteComment={deleteComment}
+            />
+          ))
         ) : (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center border-t pt-16 rounded-lg border-zinc-600">
             <img src={image} className="size-14" alt="Clipboard" />
             <div className="mt-4 flex flex-col items-center justify-center">
               <p className="text-base font-bold text-zinc-400">
