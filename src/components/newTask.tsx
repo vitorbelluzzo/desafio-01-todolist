@@ -38,6 +38,7 @@ export function NewTask() {
     })
     setCountTask(countTask - 1)
     setCards(newTaskWithoutDeleteTheOlderOne)
+    setCountTaskDone((prevCount) => prevCount - 1)
   }
 
   return (
