@@ -5,7 +5,7 @@ export function Card({ content, deleteComment, onCheckboxChange }) {
     deleteComment(content)
   }
 
-  function handleCheckboxChange(event: { target: { checked: true } }) {
+  function handleCheckboxChange(event: { target: { checked: boolean } }) {
     const isChecked = event.target.checked
     onCheckboxChange(isChecked)
   }

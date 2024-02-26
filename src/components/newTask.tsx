@@ -24,11 +24,11 @@ export function NewTask() {
     }
   }
 
-  const handleCheckboxChange = (isChecked: true) => {
+  const handleCheckboxChange = (isChecked: boolean) => {
     if (isChecked) {
-      setCountTaskDone((prevCount) => prevCount + 1)
+      setCountTaskDone(countTaskDone + 1)
     } else {
-      setCountTaskDone((prevCount) => prevCount - 1)
+      setCountTaskDone(countTaskDone - 1)
     }
   }
 
@@ -36,9 +36,11 @@ export function NewTask() {
     const newTaskWithoutDeleteTheOlderOne = cards.filter((card) => {
       return card !== taskToDelete
     })
-    setCountTask(countTask - 1)
+    if (countTaskDone !== 0) {
+      setCountTaskDone(countTaskDone - 1)
+    }
     setCards(newTaskWithoutDeleteTheOlderOne)
-    setCountTaskDone((prevCount) => prevCount - 1)
+    setCountTask(countTask - 1)
   }
 
   return (
