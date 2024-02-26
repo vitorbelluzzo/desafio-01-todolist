@@ -5,7 +5,7 @@ export function App() {
   return (
     <div>
       <Header />
-      <NewTask content={undefined} />
+      <NewTask />
     </div>
   )
 }

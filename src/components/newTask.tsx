@@ -24,8 +24,12 @@ export function NewTask() {
     }
   }
 
-  function TaskDone() {
-    setCountTaskDone(countTaskDone + 1)
+  const handleCheckboxChange = (isChecked: true) => {
+    if (isChecked) {
+      setCountTaskDone((prevCount) => prevCount + 1)
+    } else {
+      setCountTaskDone((prevCount) => prevCount - 1)
+    }
   }
 
   function deleteComment(taskToDelete: unknown) {
@@ -80,8 +84,8 @@ export function NewTask() {
             <Card
               content={card}
               key={card}
-              onClick={TaskDone}
               deleteComment={deleteComment}
+              onCheckboxChange={handleCheckboxChange}
             />
           ))
         ) : (
