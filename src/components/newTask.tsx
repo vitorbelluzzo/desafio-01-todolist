@@ -5,7 +5,7 @@ import image from '../assets/Clipboard.svg'
 
 export function NewTask() {
   const [inputContent, setInputContent] = useState('')
-  const [cards, setCards] = useState([])
+  const [cards, setCards] = useState<string[]>([])
   const [countTask, setCountTask] = useState(0)
   const [countTaskDone, setCountTaskDone] = useState(0)
 
@@ -21,6 +21,7 @@ export function NewTask() {
       setCards([...cards, inputContent])
       setInputContent('')
       setCountTask(countTask + 1)
+      console.log(Card)
     }
   }
 
@@ -32,19 +33,18 @@ export function NewTask() {
     }
   }
 
-  function deleteComment(taskToDelete: unknown) {
-    const newTaskWithoutDeleteTheOlderOne = cards.filter((card) => {
-      return card !== taskToDelete
-    })
+  function deleteCard(index: number) {
+    const newCards = [...cards]
+    newCards.splice(index, 1)
+    setCards(newCards)
+    setCountTask(countTask - 1)
     if (countTaskDone !== 0) {
       setCountTaskDone(countTaskDone - 1)
     }
-    setCards(newTaskWithoutDeleteTheOlderOne)
-    setCountTask(countTask - 1)
   }
 
   return (
-    <div className="">
+    <div>
       <form
         onSubmit={handleSubmitAndSetTaskCount}
         className="flex justify-center gap-2 mb-3  w-full top-32 absolute"
@@ -83,11 +83,11 @@ export function NewTask() {
       </div>
       <div className="mt-6 max-w-xl mx-auto gap-2 h-screen">
         {cards.length > 0 ? (
-          cards.map((card) => (
+          cards.map((card, i) => (
             <Card
+              key={i}
               content={card}
-              key={card}
-              deleteComment={deleteComment}
+              deleteCard={() => deleteCard(i)}
               onCheckboxChange={handleCheckboxChange}
             />
           ))
