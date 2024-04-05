@@ -1,6 +1,6 @@
 import { PlusCircle } from 'lucide-react'
 import { Card } from './card'
-import { SetStateAction, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import image from '../assets/Clipboard.svg'
 
 export function NewTask() {
@@ -8,6 +8,13 @@ export function NewTask() {
   const [cards, setCards] = useState<string[]>([])
   const [countTask, setCountTask] = useState(0)
   const [countTaskDone, setCountTaskDone] = useState(0)
+
+  useEffect(() => {
+    const saveCardsOnlocalStorage = localStorage.getItem('cards')
+    if (saveCardsOnlocalStorage) {
+      setCards(JSON.parse(saveCardsOnlocalStorage))
+    }
+  }, [])
 
   function handleInputChange(event: {
     target: { value: SetStateAction<string> }
@@ -18,10 +25,12 @@ export function NewTask() {
   function handleSubmitAndSetTaskCount(event: { preventDefault: () => void }) {
     event.preventDefault()
     if (inputContent !== '') {
-      setCards([...cards, inputContent])
+      const newCards = [...cards, inputContent]
+      localStorage.setItem('cards', JSON.stringify(newCards))
+      setCards(newCards)
       setInputContent('')
       setCountTask(countTask + 1)
-      console.log(Card)
+      console.log('cards salvos')
     }
   }
 
@@ -32,15 +41,17 @@ export function NewTask() {
       setCountTaskDone(countTaskDone - 1)
     }
   }
-
   function deleteCard(index: number) {
     const newCards = [...cards]
+    const isTaskDone = index < countTaskDone
+    const newCountTaskDone = isTaskDone ? countTaskDone - 1 : countTaskDone
+    const newCountTask = Math.max(countTask - 1, 0)
+
     newCards.splice(index, 1)
+    localStorage.setItem('cards', JSON.stringify(newCards))
     setCards(newCards)
-    setCountTask(countTask - 1)
-    if (countTaskDone !== 0) {
-      setCountTaskDone(countTaskDone - 1)
-    }
+    setCountTask(newCountTask)
+    setCountTaskDone(newCountTaskDone)
   }
 
   return (
