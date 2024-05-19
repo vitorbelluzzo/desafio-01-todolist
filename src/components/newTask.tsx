@@ -26,6 +26,7 @@ export function NewTask() {
     event.preventDefault()
     if (inputContent !== '') {
       const newCards = [...cards, inputContent]
+
       localStorage.setItem('cards', JSON.stringify(newCards))
       setCards(newCards)
       setInputContent('')
@@ -37,6 +38,7 @@ export function NewTask() {
   const handleCheckboxChange = (isChecked: boolean) => {
     if (isChecked) {
       setCountTaskDone(countTaskDone + 1)
+      console.log('task checkado')
     } else {
       setCountTaskDone(countTaskDone - 1)
     }
